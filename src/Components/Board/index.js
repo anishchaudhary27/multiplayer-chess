@@ -56,7 +56,8 @@ export default function Board({ house, pieces, turn, playerId }) {
                                 arr.map(j => {
                                     const ind = 8 * i + j
                                     if ((i + ind) % 2 === 0) {
-                                        return <div className={(selected === ind) ? styles.square_even_selected : styles.square_even}
+                                        return <div
+                                            className={(selected === ind) ? styles.square_even_selected : styles.square_even}
                                             onClick={() => handleClick(ind)} key={ind}>
                                             {
                                                 (board[ind] !== undefined && board[ind] !== '') &&
@@ -64,7 +65,8 @@ export default function Board({ house, pieces, turn, playerId }) {
                                             }
                                         </div>
                                     }
-                                    return <div className={(selected === ind) ? styles.square_odd_selected : styles.square_odd}
+                                    return <div
+                                        className={(selected === ind) ? styles.square_odd_selected : styles.square_odd}
                                         onClick={() => handleClick(ind)} key={ind}>
                                         {
                                             (board[ind] !== undefined && board[ind] !== '') &&

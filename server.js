@@ -9,38 +9,10 @@ let games = []
 let players = []
 
 const init_pieces = {
-    eb1: 0,
-    hb1: 1,
-    cb1: 2,
-    kb: 3,
-    qb: 4,
-    cb2: 5,
-    hb2: 6,
-    eb2: 7,
-    pb1: 8,
-    pb2: 9,
-    pb3: 10,
-    pb4: 11,
-    pb5: 12,
-    pb6: 13,
-    pb7: 14,
-    pb8: 15,
-    ew1: 56,
-    hw1: 57,
-    cw1: 58,
-    kw: 59,
-    qw: 60,
-    cw2: 61,
-    hw2: 62,
-    ew2: 63,
-    pw1: 48,
-    pw2: 49,
-    pw3: 50,
-    pw4: 51,
-    pw5: 52,
-    pw6: 53,
-    pw7: 54,
-    pw8: 55,
+    eb1: 0, hb1: 1, cb1: 2, kb: 3, qb: 4, cb2: 5, hb2: 6, eb2: 7,
+    pb1: 8, pb2: 9, pb3: 10, pb4: 11, pb5: 12, pb6: 13, pb7: 14, pb8: 15,
+    ew1: 56, hw1: 57, cw1: 58, kw: 59, qw: 60, cw2: 61, hw2: 62, ew2: 63,
+    pw1: 48, pw2: 49, pw3: 50, pw4: 51, pw5: 52, pw6: 53, pw7: 54, pw8: 55,
 }
 
 const restServer = express()
@@ -141,10 +113,22 @@ wsServer.on('request', (req) => {
                     if (game[req.house].playerId === req.playerId) {
                         players[req.playerId]["clientId"] = clientId
                         if (game.b != undefined && clients[players[game.b.playerId].clientId]) {
-                            clients[players[game.b.playerId].clientId].sendUTF(JSON.stringify({ intent: 'state', turn: game.turn, state: game.state, b: game.b, w: game.w }))
+                            clients[players[game.b.playerId].clientId].sendUTF(JSON.stringify({
+                                intent: 'state',
+                                turn: game.turn,
+                                state: game.state,
+                                b: game.b,
+                                w: game.w
+                            }))
                         }
                         if (game.w != undefined && clients[players[game.w.playerId].clientId]) {
-                            clients[players[game.w.playerId].clientId].sendUTF(JSON.stringify({ intent: 'state', turn: game.turn, state: game.state, w: game.w, b: game.b }))
+                            clients[players[game.w.playerId].clientId].sendUTF(JSON.stringify({
+                                intent: 'state',
+                                turn: game.turn,
+                                state: game.state,
+                                w: game.w,
+                                b: game.b
+                            }))
                         }
                     }
                 }
