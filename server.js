@@ -97,7 +97,6 @@ restServer.post('/api/join', (req, res) => {
 restServer.post('/api/create', (req, res) => {
     const name = req.body.name
     const house = req.body.house
-    console.log(house)
     const gameId = uuid()
     const playerId = uuid()
     games[gameId] = {
@@ -112,7 +111,6 @@ restServer.post('/api/create', (req, res) => {
         house,
         gameId
     }
-    console.log(players[playerId])
     res.json({
         playerId,
         house,
@@ -153,37 +151,31 @@ wsServer.on('request', (req) => {
                 break;
             case "move":
                 const playerId = req.playerId
-                console.log(playerId)
                 const player = players[playerId]
                 const game = games[player.gameId]
                 const house = player.house
-                console.log(player)
-                if (true) {
-                    let pieces = game.state
-                    let board = []
-                    for (let index = 0; index < 64; index++) {
-                        board.push('')
+                let pieces = game.state
+                let board = []
+                for (let index = 0; index < 64; index++) {
+                    board.push('')
+                }
+                for (const piece in pieces) {
+                    board[pieces[piece]] = piece
+                }
+                board[req.to] = board[req.from]
+                board[req.from] = ''
+                board.forEach((val, n) => {
+                    if (val !== '') {
+                        games[player.gameId].state[val] = n
                     }
-                    for (const piece in pieces) {
-                        board[pieces[piece]] = piece
-                    }
-                    if (board[req.from][1] === house) {
-                        board[req.to] = board[req.from]
-                        board[req.from] = ''
-                    }
-                    board.forEach((val, n) => {
-                        if (val !== '') {
-                            games[player.gameId].state[val] = n
-                        }
-                    })
-                    games[player.gameId].turn = (game.turn === 'w') ? 'b' : 'w'
-                    console.log(game)
-                    if (game.b != undefined && clients[players[game.b.playerId].clientId]) {
-                        clients[players[game.b.playerId].clientId].sendUTF(JSON.stringify({ intent: 'state', turn: games[player.gameId].turn, state: games[player.gameId].state, b: games[player.gameId].b, w: games[player.gameId].w }))
-                    }
-                    if (game.w != undefined && clients[players[game.w.playerId].clientId]) {
-                        clients[players[game.w.playerId].clientId].sendUTF(JSON.stringify({ intent: 'state', turn: games[player.gameId].turn, state: games[player.gameId].state, w: games[player.gameId].w, b: games[player.gameId].b }))
-                    }
+                })
+                console.log(board);
+                games[player.gameId].turn = (game.turn === 'w') ? 'b' : 'w'
+                if (game.b != undefined && clients[players[game.b.playerId].clientId]) {
+                    clients[players[game.b.playerId].clientId].sendUTF(JSON.stringify({ intent: 'state', turn: games[player.gameId].turn, state: games[player.gameId].state, b: games[player.gameId].b, w: games[player.gameId].w }))
+                }
+                if (game.w != undefined && clients[players[game.w.playerId].clientId]) {
+                    clients[players[game.w.playerId].clientId].sendUTF(JSON.stringify({ intent: 'state', turn: games[player.gameId].turn, state: games[player.gameId].state, w: games[player.gameId].w, b: games[player.gameId].b }))
                 }
                 break;
             default:

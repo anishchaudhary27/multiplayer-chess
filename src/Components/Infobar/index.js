@@ -5,18 +5,11 @@ import { useState, useEffect } from 'react/cjs/react.production.min'
 
 export default function Infobar({ gameId, house, oponent }) {
     const history = useHistory()
-    const [link, setlink] = useState("")
+    const link = (house === 'w') ? `http://${window.location.host}/?action=join&gameId=${gameId}&house=b`
+        : `http://${window.location.host}/?action=join&gameId=${gameId}&house=w`;
     const handleLeave = () => {
         history.push('/')
     }
-    useEffect(() => {
-        if (house === 'w') {
-            setlink(`http://${window.location.host}/?action=join&gameId=${gameId}&house=b`)
-        }
-        else {
-            setlink(`http://${window.location.host}/?action=join&gameId=${gameId}&house=w`)
-        }
-    }, [])
     const copyInviteLink = () => {
         navigator.clipboard.writeText(link)
     }

@@ -16,8 +16,10 @@ export default function Board({ house, pieces, turn, playerId }) {
         if (turn === '' || turn !== house) {
             return
         }
+
         if (board[key] === '') {
             if (selected > -1) {
+                console.log(key);
                 MessagePasser.sendMessage(JSON.stringify({
                     intent: 'move',
                     playerId: playerId,
